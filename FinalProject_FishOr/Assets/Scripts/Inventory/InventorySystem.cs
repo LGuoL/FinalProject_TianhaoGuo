@@ -11,6 +11,7 @@ public class InventorySlot
 public class InventorySystem : MonoBehaviour
 {
     public int maxSlots = 4;
+
     public List<InventorySlot> slots = new List<InventorySlot>();
 
     [Header("Initial Items")]
@@ -34,6 +35,7 @@ public class InventorySystem : MonoBehaviour
     {
         if (item == null) return false;
 
+        // 如果可堆叠 → 尝试叠加
         if (item.stackable)
         {
             foreach (var slot in slots)
@@ -46,8 +48,10 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
+        // 没有空位
         if (slots.Count >= maxSlots) return false;
 
+        // 创建新格子
         InventorySlot newSlot = new InventorySlot
         {
             item = item,
