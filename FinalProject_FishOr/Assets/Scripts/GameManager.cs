@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class GameManager : MonoBehaviour
     public int currentOrderSubmitted = 0;
 
     [Header("Fishing Day Settings")]
-    public float fishingTimeLimit = 180f; // 3分钟
+    public float fishingTimeLimit = 180f;
+
+    private string targetSpawnPointName = "ShopSpawnPoint";
 
     private void Awake()
     {
@@ -26,27 +29,57 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
     {
         GenerateOrderForDay();
+
+        // 初始场景也连接一次
+        MovePlayerToSpawnPoint();
+        ReconnectSceneReferences();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        MovePlayerToSpawnPoint();
+        ReconnectSceneReferences();
     }
 
     public void GenerateOrderForDay()
     {
         currentOrderSubmitted = 0;
 
-        // 订单只要求“总鱼数量”
-        // 第三天后明显提高难度
         switch (currentDay)
         {
-            case 1: currentOrderRequired = 8; break;
-            case 2: currentOrderRequired = 12; break;
-            case 3: currentOrderRequired = 20; break;
-            case 4: currentOrderRequired = 45; break;
-            case 5: currentOrderRequired = 80; break;
-            default: currentOrderRequired = 120 + (currentDay - 6) * 30; break;
+            case 1:
+                currentOrderRequired = 8;
+                break;
+            case 2:
+                currentOrderRequired = 12;
+                break;
+            case 3:
+                currentOrderRequired = 20;
+                break;
+            case 4:
+                currentOrderRequired = 45;
+                break;
+            case 5:
+                currentOrderRequired = 80;
+                break;
+            default:
+                currentOrderRequired = 120 + (currentDay - 6) * 30;
+                break;
         }
     }
 
@@ -62,7 +95,9 @@ public class GameManager : MonoBehaviour
 
     public bool SpendMoney(int amount)
     {
-        if (money < amount) return false;
+        if (money < amount)
+            return false;
+
         money -= amount;
         return true;
     }
@@ -70,17 +105,20 @@ public class GameManager : MonoBehaviour
     public void SubmitFish(int amount)
     {
         currentOrderSubmitted += amount;
+
         if (currentOrderSubmitted > currentOrderRequired)
             currentOrderSubmitted = currentOrderRequired;
     }
 
     public void GoToFishingScene()
     {
+        targetSpawnPointName = "FishingSpawnPoint";
         SceneManager.LoadScene("FishingArea");
     }
 
     public void ReturnToShopScene()
     {
+        targetSpawnPointName = "ShopSpawnPoint";
         SceneManager.LoadScene("ShopArea");
     }
 
@@ -93,10 +131,186 @@ public class GameManager : MonoBehaviour
 
     public void FailDayAndBackToMenu()
     {
-        // 你也可以改成 Game Over UI 后再回主菜单
-        SceneManager.LoadScene("ShopArea");
+        Debug.Log("订单失败，重置游戏");
+
         currentDay = 1;
         money = 0;
         GenerateOrderForDay();
+
+        ReturnToShopScene();
+    }
+
+    private void MovePlayerToSpawnPoint()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogWarning("没有找到 Player，请确认 Player 的 Tag 是 Player");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(targetSpawnPointName))
+            return;
+
+        GameObject spawnObj = GameObject.Find(targetSpawnPointName);
+
+        if (spawnObj == null)
+        {
+            Debug.LogWarning("没有找到出生点：" + targetSpawnPointName);
+            return;
+        }
+
+        CharacterController controller = player.GetComponent<CharacterController>();
+
+        if (controller != null)
+            controller.enabled = false;
+
+        player.transform.position = spawnObj.transform.position;
+        player.transform.rotation = spawnObj.transform.rotation;
+
+        if (controller != null)
+            controller.enabled = true;
+    }
+
+    private void ReconnectSceneReferences()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+        {
+            Debug.LogWarning("Reconnect 失败：没有找到 Player");
+            return;
+        }
+
+        Camera cam = player.GetComponentInChildren<Camera>();
+
+        if (cam == null)
+        {
+            Debug.LogWarning("Reconnect 失败：Player 下面没有 Camera");
+        }
+
+        InventorySystem inventory = player.GetComponent<InventorySystem>();
+        BucketSystem bucketSystem = player.GetComponent<BucketSystem>();
+
+        ReconnectPlayerInteractor(player, cam);
+        ReconnectHUD(inventory, bucketSystem);
+        ReconnectFishingRod(player, cam, inventory);
+        ReconnectBucketCollector(player, cam, bucketSystem);
+        ReconnectDeliveryCrate(bucketSystem);
+        ReconnectFishingManager();
+    }
+
+    private void ReconnectPlayerInteractor(GameObject player, Camera cam)
+    {
+        PlayerInteractor interactor = player.GetComponent<PlayerInteractor>();
+
+        if (interactor == null)
+            return;
+
+        interactor.playerCamera = cam;
+
+        GameObject interactTextObj = GameObject.Find("InteractText");
+
+        if (interactTextObj != null)
+        {
+            interactor.interactText = interactTextObj.GetComponent<TextMeshProUGUI>();
+        }
+        else
+        {
+            Debug.LogWarning("没有找到 InteractText");
+        }
+    }
+
+    private void ReconnectHUD(InventorySystem inventory, BucketSystem bucketSystem)
+    {
+        HUDController hud = FindFirstObjectByType<HUDController>();
+
+        if (hud == null)
+            return;
+
+        hud.inventory = inventory;
+        hud.bucket = bucketSystem;
+
+        AssignText("OrderText", ref hud.orderText);
+        AssignText("MoneyText", ref hud.moneyText);
+        AssignText("DayText", ref hud.dayText);
+        AssignText("BucketText", ref hud.bucketText);
+        AssignText("InventoryText", ref hud.inventoryText);
+    }
+
+    private void ReconnectFishingRod(GameObject player, Camera cam, InventorySystem inventory)
+    {
+        FishingRodController rod = player.GetComponent<FishingRodController>();
+
+        if (rod == null)
+            return;
+
+        rod.playerCamera = cam;
+        rod.inventory = inventory;
+
+        GameObject shoreSpawn = GameObject.Find("ShoreSpawnPoint");
+
+        if (shoreSpawn != null)
+        {
+            rod.shoreSpawnPoint = shoreSpawn.transform;
+        }
+    }
+
+    private void ReconnectBucketCollector(GameObject player, Camera cam, BucketSystem bucketSystem)
+    {
+        BucketCollector collector = player.GetComponent<BucketCollector>();
+
+        if (collector == null)
+            return;
+
+        collector.playerCamera = cam;
+        collector.bucketSystem = bucketSystem;
+    }
+
+    private void ReconnectDeliveryCrate(BucketSystem bucketSystem)
+    {
+        DeliveryCrate crate = FindFirstObjectByType<DeliveryCrate>();
+
+        if (crate == null)
+            return;
+
+        crate.playerBucket = bucketSystem;
+
+        FishingManager fishingManager = FindFirstObjectByType<FishingManager>();
+
+        if (fishingManager != null)
+        {
+            crate.fishingManager = fishingManager;
+        }
+    }
+
+    private void ReconnectFishingManager()
+    {
+        FishingManager fishingManager = FindFirstObjectByType<FishingManager>();
+
+        if (fishingManager == null)
+            return;
+
+        GameObject timerTextObj = GameObject.Find("TimerText");
+
+        if (timerTextObj != null)
+        {
+            fishingManager.timerText = timerTextObj.GetComponent<TextMeshProUGUI>();
+        }
+    }
+
+    private void AssignText(string objectName, ref TextMeshProUGUI targetField)
+    {
+        GameObject obj = GameObject.Find(objectName);
+
+        if (obj != null)
+        {
+            targetField = obj.GetComponent<TextMeshProUGUI>();
+        }
+        else
+        {
+            Debug.LogWarning("没有找到 UI 文本：" + objectName);
+        }
     }
 }

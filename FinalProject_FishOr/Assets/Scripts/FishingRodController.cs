@@ -26,28 +26,39 @@ public class FishingRodController : MonoBehaviour
 
     void TryFish()
     {
+        if (inventory == null)
+        {
+            Debug.LogWarning("FishingRodController 没有连接 InventorySystem");
+            return;
+        }
+
         if (!inventory.HasItem(basicBaitItem, 1))
         {
-            Debug.Log("There is no more bait.");
+            Debug.Log("没有鱼饵了");
             return;
         }
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+
         if (Physics.Raycast(ray, out RaycastHit hit, castDistance, waterLayer))
         {
             inventory.RemoveItem(basicBaitItem, 1);
             StartCoroutine(FishingRoutine());
+        }
+        else
+        {
+            Debug.Log("没有对准水面");
         }
     }
 
     IEnumerator FishingRoutine()
     {
         isFishing = true;
-        Debug.Log("Reeling in the line...");
+        Debug.Log("抛竿中...");
 
         yield return new WaitForSeconds(Random.Range(1.5f, 3.5f));
 
-        Debug.Log("The fish has taken the bait and has been successfully pulled up!");
+        Debug.Log("鱼上钩了，成功拉起！");
         SpawnFishOnShore();
 
         isFishing = false;
@@ -55,10 +66,28 @@ public class FishingRodController : MonoBehaviour
 
     void SpawnFishOnShore()
     {
-        if (groundFishPrefab != null && shoreSpawnPoint != null)
+        if (groundFishPrefab == null)
         {
-            Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-            Instantiate(groundFishPrefab, shoreSpawnPoint.position + offset, Quaternion.identity);
+            Debug.LogWarning("没有设置 groundFishPrefab");
+            return;
         }
+
+        if (shoreSpawnPoint == null)
+        {
+            Debug.LogWarning("没有设置 shoreSpawnPoint");
+            return;
+        }
+
+        Vector3 offset = new Vector3(
+            Random.Range(-2f, 2f),
+            0,
+            Random.Range(-2f, 2f)
+        );
+
+        Instantiate(
+            groundFishPrefab,
+            shoreSpawnPoint.position + offset,
+            Quaternion.identity
+        );
     }
 }

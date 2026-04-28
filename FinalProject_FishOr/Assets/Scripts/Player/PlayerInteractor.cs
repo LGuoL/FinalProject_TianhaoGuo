@@ -22,7 +22,21 @@ public class PlayerInteractor : MonoBehaviour
     void CheckForInteractable()
     {
         currentInteractable = null;
-        interactText.text = "";
+
+        if (interactText != null)
+        {
+            interactText.text = "";
+        }
+
+        if (playerCamera == null)
+        {
+            playerCamera = GetComponentInChildren<Camera>();
+
+            if (playerCamera == null)
+            {
+                return;
+            }
+        }
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
@@ -33,7 +47,11 @@ public class PlayerInteractor : MonoBehaviour
             if (interactable != null)
             {
                 currentInteractable = interactable;
-                interactText.text = interactable.GetInteractText();
+
+                if (interactText != null)
+                {
+                    interactText.text = interactable.GetInteractText();
+                }
             }
         }
     }
