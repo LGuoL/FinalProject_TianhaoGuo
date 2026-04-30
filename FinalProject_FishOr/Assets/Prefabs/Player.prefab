@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 8365796720236287081}
   - component: {fileID: 3040839112605486524}
   - component: {fileID: 7741669987302052430}
+  - component: {fileID: 2677836735529004316}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -368,3 +369,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a21687871310048a892ae40abb2eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PersistentPlayer
+--- !u!114 &2677836735529004316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6393599518310974486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8cabd9d786f1244bf96af5689b937d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  currentEquipment: 1
+  fishingRodController: {fileID: 8365796720236287081}
+  bucketCollector: {fileID: 3040839112605486524}
+  equipmentText: {fileID: 0}

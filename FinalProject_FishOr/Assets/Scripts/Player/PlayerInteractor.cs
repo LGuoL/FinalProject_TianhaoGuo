@@ -4,18 +4,46 @@ using TMPro;
 public class PlayerInteractor : MonoBehaviour
 {
     public Camera playerCamera;
-    public float interactDistance = 4f;
+    public float interactDistance = 6f;
     public TextMeshProUGUI interactText;
 
     private IInteractable currentInteractable;
 
+    void Start()
+    {
+        AutoReconnect();
+    }
+
     void Update()
     {
+        if (playerCamera == null || interactText == null)
+        {
+            AutoReconnect();
+        }
+
         CheckForInteractable();
 
         if (Input.GetKeyDown(KeyCode.E) && currentInteractable != null)
         {
             currentInteractable.Interact();
+        }
+    }
+
+    void AutoReconnect()
+    {
+        if (playerCamera == null)
+        {
+            playerCamera = GetComponentInChildren<Camera>();
+        }
+
+        if (interactText == null)
+        {
+            GameObject textObj = GameObject.Find("InteractText");
+
+            if (textObj != null)
+            {
+                interactText = textObj.GetComponent<TextMeshProUGUI>();
+            }
         }
     }
 
@@ -30,12 +58,7 @@ public class PlayerInteractor : MonoBehaviour
 
         if (playerCamera == null)
         {
-            playerCamera = GetComponentInChildren<Camera>();
-
-            if (playerCamera == null)
-            {
-                return;
-            }
+            return;
         }
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
@@ -43,6 +66,11 @@ public class PlayerInteractor : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+
+            if (interactable == null)
+            {
+                interactable = hit.collider.GetComponentInParent<IInteractable>();
+            }
 
             if (interactable != null)
             {

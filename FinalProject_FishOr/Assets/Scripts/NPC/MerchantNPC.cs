@@ -12,15 +12,15 @@ public class MerchantNPC : MonoBehaviour, IInteractable
     {
         if (GameManager.Instance.currentDay >= 3 && !hasTalkedToday)
         {
-            return "Press E to talk to merchant(new products are available for display)";
+            return "Press E to talk to merchant (new products available)";
         }
 
         if (playerBucket != null && playerBucket.currentFishCount > 0)
         {
-            return "Press E to sell all the fish in the bucket";
+            return $"Press E to sell {playerBucket.currentFishCount} fish";
         }
 
-        return "Press E to talk to the merchant / view today's orders";
+        return "Press E to talk / view today's order";
     }
 
     public void Interact()
@@ -28,7 +28,7 @@ public class MerchantNPC : MonoBehaviour, IInteractable
         if (GameManager.Instance.currentDay >= 3 && !hasTalkedToday)
         {
             hasTalkedToday = true;
-            Debug.Log("商人：第3天开始有新货上架了，正常钓鱼已经不够用了。");
+            ShowDialogue("Merchant: New products are available! Normal fishing is not enough anymore.");
             return;
         }
 
@@ -38,7 +38,7 @@ public class MerchantNPC : MonoBehaviour, IInteractable
             return;
         }
 
-        Debug.Log($"商人：今日订单需要提交总共 {GameManager.Instance.currentOrderRequired} 条鱼。");
+        ShowDialogue($"Merchant: Today's order requires {GameManager.Instance.currentOrderRequired} fish in total.");
     }
 
     private void SellAllFish()
@@ -47,14 +47,24 @@ public class MerchantNPC : MonoBehaviour, IInteractable
 
         if (totalFish <= 0)
         {
-            Debug.Log("商人：你的桶里没有鱼。");
+            ShowDialogue("Merchant: Your bucket is empty.");
             return;
         }
 
         int earned = totalFish * pricePerFish;
         GameManager.Instance.AddMoney(earned);
 
-        Debug.Log($"商人：收下了 {totalFish} 条鱼，你获得 {earned} 金币。");
+        ShowDialogue($"Merchant: Sold {totalFish} fish. You earned ${earned}.");
+    }
+
+    private void ShowDialogue(string message)
+    {
+        Debug.Log(message);
+
+        if (DialogueUI.Instance != null)
+        {
+            DialogueUI.Instance.ShowMessage(message);
+        }
     }
 
     public void ResetDailyDialogue()

@@ -15,21 +15,36 @@ public class HUDController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance == null) return;
+        if (GameManager.Instance != null)
+        {
+            if (orderText != null)
+                orderText.text = $"Order: {GameManager.Instance.currentOrderSubmitted}/{GameManager.Instance.currentOrderRequired}";
 
-        orderText.text = $"Order: {GameManager.Instance.currentOrderSubmitted}/{GameManager.Instance.currentOrderRequired}";
-        moneyText.text = $"Money: ${GameManager.Instance.money}";
-        dayText.text = $"Day: {GameManager.Instance.currentDay}";
-        bucketText.text = $"Bucket: {bucket.currentFishCount} fish";
+            if (moneyText != null)
+                moneyText.text = $"Money: ${GameManager.Instance.money}";
 
-        if (inventory != null)
+            if (dayText != null)
+                dayText.text = $"Day: {GameManager.Instance.currentDay}";
+        }
+
+        if (bucketText != null && bucket != null)
+        {
+            bucketText.text = $"Bucket: {bucket.currentFishCount} fish";
+        }
+
+        if (inventoryText != null && inventory != null)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Inventory:");
+            sb.Append("Inventory: ");
+
             foreach (var slot in inventory.slots)
             {
-                sb.AppendLine($"{slot.item.itemName} x{slot.count}");
+                if (slot.item != null)
+                {
+                    sb.Append($"{slot.item.itemName} x{slot.count}   ");
+                }
             }
+
             inventoryText.text = sb.ToString();
         }
     }

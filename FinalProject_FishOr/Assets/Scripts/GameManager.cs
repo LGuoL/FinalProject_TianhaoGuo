@@ -173,6 +173,34 @@ public class GameManager : MonoBehaviour
             controller.enabled = true;
     }
 
+    private void ReconnectMerchant(BucketSystem bucketSystem)
+    {
+        MerchantNPC merchant = FindFirstObjectByType<MerchantNPC>();
+
+        if (merchant == null)
+            return;
+
+        merchant.playerBucket = bucketSystem;
+    }
+
+    private void ReconnectPlayerEquipment(GameObject player)
+    {
+        PlayerEquipment equipment = player.GetComponent<PlayerEquipment>();
+
+        if (equipment == null)
+            return;
+
+        equipment.fishingRodController = player.GetComponent<FishingRodController>();
+        equipment.bucketCollector = player.GetComponent<BucketCollector>();
+
+        GameObject equippedTextObj = GameObject.Find("EquippedText");
+
+        if (equippedTextObj != null)
+        {
+            equipment.equipmentText = equippedTextObj.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+    }
+
     private void ReconnectSceneReferences()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -199,6 +227,8 @@ public class GameManager : MonoBehaviour
         ReconnectBucketCollector(player, cam, bucketSystem);
         ReconnectDeliveryCrate(bucketSystem);
         ReconnectFishingManager();
+        ReconnectMerchant(bucketSystem);
+        ReconnectPlayerEquipment(player);
     }
 
     private void ReconnectPlayerInteractor(GameObject player, Camera cam)

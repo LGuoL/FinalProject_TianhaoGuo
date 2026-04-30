@@ -16,19 +16,20 @@ public class FishingRodController : MonoBehaviour
 
     private bool isFishing = false;
 
-    void Update()
+    public void TryFish()
     {
-        if (Input.GetMouseButtonDown(0) && !isFishing)
-        {
-            TryFish();
-        }
-    }
+        if (isFishing)
+            return;
 
-    void TryFish()
-    {
         if (inventory == null)
         {
             Debug.LogWarning("FishingRodController 没有连接 InventorySystem");
+            return;
+        }
+
+        if (basicBaitItem == null)
+        {
+            Debug.LogWarning("FishingRodController 没有连接 BasicBaitItem");
             return;
         }
 
@@ -36,6 +37,16 @@ public class FishingRodController : MonoBehaviour
         {
             Debug.Log("没有鱼饵了");
             return;
+        }
+
+        if (playerCamera == null)
+        {
+            playerCamera = GetComponentInChildren<Camera>();
+            if (playerCamera == null)
+            {
+                Debug.LogWarning("FishingRodController 没有 Camera");
+                return;
+            }
         }
 
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
@@ -68,13 +79,13 @@ public class FishingRodController : MonoBehaviour
     {
         if (groundFishPrefab == null)
         {
-            Debug.LogWarning("没有设置 groundFishPrefab");
+            Debug.LogWarning("没有设置 GroundFishPrefab");
             return;
         }
 
         if (shoreSpawnPoint == null)
         {
-            Debug.LogWarning("没有设置 shoreSpawnPoint");
+            Debug.LogWarning("没有设置 ShoreSpawnPoint");
             return;
         }
 

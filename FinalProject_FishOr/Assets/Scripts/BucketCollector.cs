@@ -10,16 +10,28 @@ public class BucketCollector : MonoBehaviour
     public float collectRadius = 2.5f;
     public LayerMask fishLayer;
 
-    void Update()
+    public void TryCollectFish()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (playerCamera == null)
         {
-            TryCollectFish();
+            playerCamera = GetComponentInChildren<Camera>();
+            if (playerCamera == null)
+            {
+                Debug.LogWarning("BucketCollector 没有 Camera");
+                return;
+            }
         }
-    }
 
-    void TryCollectFish()
-    {
+        if (bucketSystem == null)
+        {
+            bucketSystem = GetComponent<BucketSystem>();
+            if (bucketSystem == null)
+            {
+                Debug.LogWarning("BucketCollector 没有 BucketSystem");
+                return;
+            }
+        }
+
         Vector3 center = playerCamera.transform.position + playerCamera.transform.forward * collectDistance;
 
         Collider[] hits = Physics.OverlapSphere(center, collectRadius, fishLayer);
@@ -29,11 +41,17 @@ public class BucketCollector : MonoBehaviour
         foreach (Collider hit in hits)
         {
             FishGroundPickup fish = hit.GetComponent<FishGroundPickup>();
+
+            if (fish == null)
+            {
+                fish = hit.GetComponentInParent<FishGroundPickup>();
+            }
+
             if (fish != null)
             {
                 bucketSystem.AddFish(fish.fishAmount);
-                Destroy(fish.gameObject);
                 collected += fish.fishAmount;
+                Destroy(fish.gameObject);
             }
         }
 
