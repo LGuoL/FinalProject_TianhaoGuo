@@ -95,6 +95,14 @@ public class ShopItemDisplay : MonoBehaviour, IInteractable, IHoverable
             return;
         }
 
+        if (itemData.itemType == ItemType.Upgrade)
+        {
+            inventory.ExpandSlots(2);
+            hasPurchased = true;
+            ShowInfo("Backpack expanded by 2 slots.");
+            return;
+        }
+
         bool added = inventory.AddItem(itemData, amount);
 
         if (!added)
