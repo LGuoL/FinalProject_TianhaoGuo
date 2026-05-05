@@ -26,6 +26,8 @@ public class PlayerEquipment : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+            return;
         HandleSwitchInput();
         HandleUseInput();
     }
