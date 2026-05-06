@@ -49,7 +49,7 @@ public class BucketCollector : MonoBehaviour
 
             if (fish != null)
             {
-                bucketSystem.AddFish(fish.fishAmount);
+                bucketSystem.AddFish(fish.fishData, fish.fishAmount);
                 collected += fish.fishAmount;
                 Destroy(fish.gameObject);
             }

@@ -43,15 +43,21 @@ public class MerchantNPC : MonoBehaviour, IInteractable
 
     private void SellAllFish()
     {
-        int totalFish = playerBucket.RemoveAllFish();
+        if (playerBucket == null)
+        {
+            ShowDialogue("Merchant: I cannot find your bucket.");
+            return;
+        }
 
-        if (totalFish <= 0)
+        if (playerBucket.currentFishCount <= 0)
         {
             ShowDialogue("Merchant: Your bucket is empty.");
             return;
         }
 
-        int earned = totalFish * pricePerFish;
+        int totalFish = playerBucket.currentFishCount;
+        int earned = playerBucket.RemoveAllFishValue();
+
         GameManager.Instance.AddMoney(earned);
 
         ShowDialogue($"Merchant: Sold {totalFish} fish. You earned ${earned}.");

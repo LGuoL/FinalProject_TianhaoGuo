@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 3040839112605486524}
   - component: {fileID: 7741669987302052430}
   - component: {fileID: 2677836735529004316}
+  - component: {fileID: 8094194303026564365}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -302,6 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BucketSystem
   currentFishCount: 0
+  currentFishValue: 0
 --- !u!114 &7005609030571211180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,10 +336,20 @@ MonoBehaviour:
   waterLayer:
     serializedVersion: 2
     m_Bits: 16
-  basicBaitItem: {fileID: 11400000, guid: a2453830d20517148a610f6bb1ef2392, type: 2}
   inventory: {fileID: 1821332883624147441}
-  groundFishPrefab: {fileID: 3962560323885656241, guid: 481e95cd9f2046345b157a761d1a9dcf, type: 3}
+  currentRod: {fileID: 11400000, guid: e600c84d5efafa24299125e4fe2f2d05, type: 2}
+  currentBait: {fileID: 11400000, guid: 242a4dcf22f37ab439f1378b85f77722, type: 2}
+  basicBait: {fileID: 11400000, guid: 242a4dcf22f37ab439f1378b85f77722, type: 2}
+  betterBait: {fileID: 11400000, guid: 23e9e0f82839bb04eb73cc71a66190c6, type: 2}
+  bestBait: {fileID: 11400000, guid: 0ce959f8dd62f3c459bad215a3f64b48, type: 2}
+  availableFish:
+  - {fileID: 11400000, guid: add7caecbb7413f4e9ac7a0ac3f2ff75, type: 2}
+  - {fileID: 11400000, guid: 14e8b73b38970e94ab77f76b86fe911e, type: 2}
+  - {fileID: 11400000, guid: ab708639e9eea4643b194bd827c34b03, type: 2}
+  - {fileID: 11400000, guid: 3990ec6c04cab1045a9b38ab7dd270fa, type: 2}
   shoreSpawnPoint: {fileID: 0}
+  minBaseBiteTime: 1.5
+  maxBaseBiteTime: 3.5
 --- !u!114 &3040839112605486524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,3 +397,21 @@ MonoBehaviour:
   fishingRodController: {fileID: 8365796720236287081}
   bucketCollector: {fileID: 3040839112605486524}
   equipmentText: {fileID: 0}
+--- !u!114 &8094194303026564365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6393599518310974486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f43ba5a9421a14db046f15be77df7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingGearTester
+  rodController: {fileID: 8365796720236287081}
+  basicRod: {fileID: 11400000, guid: e600c84d5efafa24299125e4fe2f2d05, type: 2}
+  advancedRod: {fileID: 11400000, guid: 06154a26317a0484fa35bc7282f589ca, type: 2}
+  basicBait: {fileID: 11400000, guid: 242a4dcf22f37ab439f1378b85f77722, type: 2}
+  betterBait: {fileID: 11400000, guid: 23e9e0f82839bb04eb73cc71a66190c6, type: 2}
+  bestBait: {fileID: 11400000, guid: 0ce959f8dd62f3c459bad215a3f64b48, type: 2}

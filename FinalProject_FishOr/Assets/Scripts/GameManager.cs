@@ -285,6 +285,13 @@ public class GameManager : MonoBehaviour
         {
             rod.shoreSpawnPoint = shoreSpawn.transform;
         }
+
+        FishingQTE qte = FindFirstObjectByType<FishingQTE>();
+
+        if (qte != null)
+        {
+            rod.fishingQTE = qte;
+        }
     }
 
     private void ReconnectBucketCollector(GameObject player, Camera cam, BucketSystem bucketSystem)

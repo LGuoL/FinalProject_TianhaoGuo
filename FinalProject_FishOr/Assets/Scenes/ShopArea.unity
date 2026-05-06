@@ -209,7 +209,7 @@ MonoBehaviour:
   amount: 1
   unlockDay: 1
   oneTimePurchase: 1
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!136 &70327205
@@ -1718,7 +1718,7 @@ MonoBehaviour:
   amount: 1000
   unlockDay: 3
   oneTimePurchase: 0
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!4 &1051745743 stripped
@@ -2165,7 +2165,7 @@ MonoBehaviour:
   amount: 1
   unlockDay: 3
   oneTimePurchase: 1
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!65 &1275512431
@@ -2371,10 +2371,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemDisplay
   itemData: {fileID: 11400000, guid: 504c1c23c7588f44e84f273489b699c1, type: 2}
-  amount: 5
+  amount: 1
   unlockDay: 1
   oneTimePurchase: 0
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!65 &1297336302
@@ -2777,10 +2777,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemDisplay
   itemData: {fileID: 11400000, guid: a2453830d20517148a610f6bb1ef2392, type: 2}
-  amount: 1000
+  amount: 2
   unlockDay: 1
   oneTimePurchase: 0
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!135 &1431220773
@@ -3094,7 +3094,7 @@ MonoBehaviour:
   amount: 1
   unlockDay: 3
   oneTimePurchase: 1
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!65 &1734060844
@@ -3308,10 +3308,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemDisplay
   itemData: {fileID: 11400000, guid: 3fe864f22e71bb0419b3f15517e938fc, type: 2}
-  amount: 1000
+  amount: 1
   unlockDay: 1
   oneTimePurchase: 0
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!135 &1831647185
@@ -3440,10 +3440,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemDisplay
   itemData: {fileID: 11400000, guid: b62c94702466b6241a38dc442748a418, type: 2}
-  amount: 1000
+  amount: 1
   unlockDay: 1
   oneTimePurchase: 0
-  hoverScaleMultiplier: 1.2
+  hoverScaleMultiplier: 1.5
   scaleSpeed: 10
   shopInfoText: {fileID: 891297275}
 --- !u!135 &1869380851
