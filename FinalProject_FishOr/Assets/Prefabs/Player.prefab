@@ -350,6 +350,7 @@ MonoBehaviour:
   shoreSpawnPoint: {fileID: 0}
   minBaseBiteTime: 1.5
   maxBaseBiteTime: 3.5
+  fishingQTE: {fileID: 0}
 --- !u!114 &3040839112605486524
 MonoBehaviour:
   m_ObjectHideFlags: 0

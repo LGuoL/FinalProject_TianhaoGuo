@@ -14,6 +14,11 @@ public class FishingQTE : MonoBehaviour
     public float basePointerSpeed = 450f;
     public float baseSuccessWidth = 120f;
 
+    [Header("Time Limit")]
+    public float qteDuration = 3f;
+
+    private float currentTimer;
+
     private bool isActive = false;
     private bool movingRight = true;
 
@@ -36,6 +41,17 @@ public class FishingQTE : MonoBehaviour
 
         MovePointer();
 
+        currentTimer -= Time.deltaTime;
+
+        // 时间结束自动失败
+        if (currentTimer <= 0f)
+        {
+            Debug.Log("QTE timeout!");
+
+            EndQTE(false);
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             CheckResult();
@@ -54,6 +70,8 @@ public class FishingQTE : MonoBehaviour
         onQTEFinished = callback;
         isActive = true;
         movingRight = true;
+
+        currentTimer = qteDuration;
 
         qtePanel.SetActive(true);
 

@@ -10,4 +10,6 @@ public class RodData : ScriptableObject
 
     [Header("Future QTE")]
     public float qteDifficultyMultiplier = 1f;
+    [Header("QTE Time")]
+    public float qteDurationMultiplier = 1f;
 }
