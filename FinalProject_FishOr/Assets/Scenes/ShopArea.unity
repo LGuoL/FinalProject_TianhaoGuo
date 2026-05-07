@@ -574,8 +574,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   hasSeenDay3ShopDialogue: 0
   specialShopUnlocked: 0
-  currentDay: 1
-  money: 20
+  currentDay: 4
+  money: 1000000
   currentOrderRequired: 8
   currentOrderSubmitted: 0
   fishingTimeLimit: 180
