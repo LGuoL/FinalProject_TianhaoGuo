@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fish_Trash
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Trash Fish
-  fishPrefab: {fileID: 919132149155446097, guid: ae51ad94fa7d3764d957aa512d506d00, type: 3}
+  fishPrefab: {fileID: 2206852426022253465, guid: de500f6b90f89bc4c87a6585b2dea01a, type: 3}
   sellPrice: 5
   baseWeight: 50

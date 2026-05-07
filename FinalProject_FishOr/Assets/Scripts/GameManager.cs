@@ -6,6 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Shop Unlock")]
+    public bool hasSeenDay3ShopDialogue = false;
+    public bool specialShopUnlocked = false;
+
     [Header("Progress")]
     public int currentDay = 1;
     public int money = 0;
@@ -48,6 +52,19 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
+    }
+
+    public bool NeedDay3ShopDialogue()
+    {
+        return currentDay >= 3 && !hasSeenDay3ShopDialogue;
+    }
+
+    public void UnlockSpecialShop()
+    {
+        hasSeenDay3ShopDialogue = true;
+        specialShopUnlocked = true;
+
+        Debug.Log("Special shop unlocked.");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -131,6 +148,10 @@ public class GameManager : MonoBehaviour
 
     public void FailDayAndBackToMenu()
     {
+
+        hasSeenDay3ShopDialogue = false;
+        specialShopUnlocked = false;
+
         Debug.Log("∂©µ• ß∞‹£¨÷ÿ÷√”Œœ∑");
 
         currentDay = 1;
@@ -192,12 +213,14 @@ public class GameManager : MonoBehaviour
 
         equipment.fishingRodController = player.GetComponent<FishingRodController>();
         equipment.bucketCollector = player.GetComponent<BucketCollector>();
+        equipment.weaponFishingController = player.GetComponent<WeaponFishingController>();
 
         GameObject equippedTextObj = GameObject.Find("EquippedText");
 
         if (equippedTextObj != null)
         {
             equipment.equipmentText = equippedTextObj.GetComponent<TMPro.TextMeshProUGUI>();
+            equipment.RefreshUI();
         }
     }
 
@@ -225,10 +248,30 @@ public class GameManager : MonoBehaviour
         ReconnectHUD(inventory, bucketSystem);
         ReconnectFishingRod(player, cam, inventory);
         ReconnectBucketCollector(player, cam, bucketSystem);
+        ReconnectWeaponFishing(player, cam, inventory);
+        ReconnectPlayerEquipment(player);
         ReconnectDeliveryCrate(bucketSystem);
         ReconnectFishingManager();
         ReconnectMerchant(bucketSystem);
         ReconnectPlayerEquipment(player);
+    }
+
+    private void ReconnectWeaponFishing(GameObject player, Camera cam, InventorySystem inventory)
+    {
+        WeaponFishingController weapon = player.GetComponent<WeaponFishingController>();
+
+        if (weapon == null)
+            return;
+
+        weapon.playerCamera = cam;
+        weapon.inventory = inventory;
+
+        GameObject shoreSpawn = GameObject.Find("ShoreSpawnPoint");
+
+        if (shoreSpawn != null)
+        {
+            weapon.shoreSpawnPoint = shoreSpawn.transform;
+        }
     }
 
     private void ReconnectPlayerInteractor(GameObject player, Camera cam)

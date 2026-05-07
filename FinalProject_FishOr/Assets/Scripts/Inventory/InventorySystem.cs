@@ -14,6 +14,8 @@ public class InventorySystem : MonoBehaviour
 
     public List<InventorySlot> slots = new List<InventorySlot>();
 
+
+
     [Header("Initial Items")]
     public ItemData noteItem;
     public ItemData basicRodItem;
@@ -28,6 +30,7 @@ public class InventorySystem : MonoBehaviour
             AddItem(basicRodItem, 1);
             AddItem(basicBaitItem, 10);
             AddItem(bucketItem, 1);
+
         }
     }
 

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fish_Rare
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Rare Fish
-  fishPrefab: {fileID: 919132149155446097, guid: ea93ead513f04c9478f78e3f40ba5b11, type: 3}
+  fishPrefab: {fileID: 1937588542411740048, guid: a05072560c3476b4cb8dddf22f697392, type: 3}
   sellPrice: 20
   baseWeight: 15

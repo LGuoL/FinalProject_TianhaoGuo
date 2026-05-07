@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Fish_Gold
   m_EditorClassIdentifier: Assembly-CSharp::FishData
   fishName: Gold Fish
-  fishPrefab: {fileID: 919132149155446097, guid: ca38d4485fce19f4aa0d3d7bdd8b6cf2, type: 3}
+  fishPrefab: {fileID: 5925960515861282153, guid: 2fb93ff3c1250a74ca5f53a6bc162675, type: 3}
   sellPrice: 40
   baseWeight: 5

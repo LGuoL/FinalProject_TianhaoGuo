@@ -10,9 +10,9 @@ public class MerchantNPC : MonoBehaviour, IInteractable
 
     public string GetInteractText()
     {
-        if (GameManager.Instance.currentDay >= 3 && !hasTalkedToday)
+        if (GameManager.Instance.NeedDay3ShopDialogue())
         {
-            return "Press E to talk to merchant (new products available)";
+            return "Press E to talk to merchant (new products)";
         }
 
         if (playerBucket != null && playerBucket.currentFishCount > 0)
@@ -25,10 +25,12 @@ public class MerchantNPC : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (GameManager.Instance.currentDay >= 3 && !hasTalkedToday)
+        if (GameManager.Instance.NeedDay3ShopDialogue())
         {
             hasTalkedToday = true;
-            ShowDialogue("Merchant: New products are available! Normal fishing is not enough anymore.");
+            GameManager.Instance.UnlockSpecialShop();
+
+            ShowDialogue("Merchant: New products are here! Normal fishing is not enough anymore. Try the SMG, grenades, RPG, and the mysterious box.");
             return;
         }
 
@@ -56,7 +58,13 @@ public class MerchantNPC : MonoBehaviour, IInteractable
         }
 
         int totalFish = playerBucket.currentFishCount;
-        int earned = playerBucket.RemoveAllFishValue();
+
+        int earned;
+
+        // 如果你已经做了鱼价值系统，用这个：
+        earned = playerBucket.currentFishValue > 0
+            ? playerBucket.RemoveAllFishValue()
+            : playerBucket.RemoveAllFish() * pricePerFish;
 
         GameManager.Instance.AddMoney(earned);
 
@@ -68,9 +76,7 @@ public class MerchantNPC : MonoBehaviour, IInteractable
         Debug.Log(message);
 
         if (DialogueUI.Instance != null)
-        {
             DialogueUI.Instance.ShowMessage(message);
-        }
     }
 
     public void ResetDailyDialogue()

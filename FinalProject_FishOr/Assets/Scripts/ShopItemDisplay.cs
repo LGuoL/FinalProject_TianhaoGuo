@@ -16,6 +16,8 @@ public class ShopItemDisplay : MonoBehaviour, IInteractable, IHoverable
     [Header("UI")]
     public TextMeshProUGUI shopInfoText;
 
+    public bool requiresSpecialShopUnlock = false;
+
     private Vector3 originalScale;
     private bool isHovering = false;
     private bool hasPurchased = false;
@@ -37,6 +39,9 @@ public class ShopItemDisplay : MonoBehaviour, IInteractable, IHoverable
     {
         if (!IsUnlocked())
         {
+            if (requiresSpecialShopUnlock && GameManager.Instance.currentDay >= unlockDay)
+                return "Talk to the merchant first";
+
             return $"Locked until Day {unlockDay}";
         }
 
@@ -141,7 +146,13 @@ public class ShopItemDisplay : MonoBehaviour, IInteractable, IHoverable
         if (GameManager.Instance == null)
             return false;
 
-        return GameManager.Instance.currentDay >= unlockDay;
+        if (GameManager.Instance.currentDay < unlockDay)
+            return false;
+
+        if (requiresSpecialShopUnlock && !GameManager.Instance.specialShopUnlocked)
+            return false;
+
+        return true;
     }
 
     private void ShowCurrentItemInfo()

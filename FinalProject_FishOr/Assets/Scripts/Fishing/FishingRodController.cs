@@ -7,6 +7,9 @@ public class FishingRodController : MonoBehaviour
     public float castDistance = 20f;
     public LayerMask waterLayer;
 
+    [Header("Visual")]
+    public PlayerWeaponVisuals weaponVisuals;
+
     [Header("Inventory")]
     public InventorySystem inventory;
 
@@ -39,6 +42,8 @@ public class FishingRodController : MonoBehaviour
     {
         if (currentBait == null)
             currentBait = basicBait;
+        if (weaponVisuals == null)
+            weaponVisuals = GetComponent<PlayerWeaponVisuals>();
     }
 
     public void SetBait(BaitData bait)
@@ -53,6 +58,11 @@ public class FishingRodController : MonoBehaviour
 
     public void TryFish()
     {
+        if (weaponVisuals != null)
+        {
+            weaponVisuals.PlayRodCastAnimation();
+        }
+
         if (isFishing)
             return;
 
@@ -90,6 +100,12 @@ public class FishingRodController : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, castDistance, waterLayer))
         {
             inventory.RemoveItem(currentBait.baitItem, 1);
+
+            if (weaponVisuals != null)
+            {
+                weaponVisuals.PlayRodCastAnimation();
+            }
+
             StartCoroutine(FishingRoutine());
         }
         else
