@@ -32,6 +32,15 @@ public class FishingManager : MonoBehaviour
 
     public void EndFishingDay()
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            MysteryBoxEffect effect = player.GetComponent<MysteryBoxEffect>();
+
+            if (effect != null)
+                effect.StopEffect();
+        }
         isRunning = false;
 
         if (GameManager.Instance.IsOrderComplete())

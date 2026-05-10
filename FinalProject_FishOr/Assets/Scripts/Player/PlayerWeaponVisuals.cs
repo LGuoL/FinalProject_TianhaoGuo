@@ -8,6 +8,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
     public GameObject smgView;
     public GameObject grenadeView;
     public GameObject rpgView;
+    public GameObject mysteryBoxView;
 
     [Header("Rod Cast Animation")]
     public float castForwardAngle = 45f;
@@ -66,6 +67,11 @@ public class PlayerWeaponVisuals : MonoBehaviour
                 if (rpgView != null)
                     rpgView.SetActive(true);
                 break;
+
+            case EquipmentType.MysteryBox:
+                if (mysteryBoxView != null)
+                    mysteryBoxView.SetActive(true);
+                break;
         }
     }
 
@@ -85,6 +91,9 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
         if (rpgView != null)
             rpgView.SetActive(false);
+
+        if (mysteryBoxView != null)
+            mysteryBoxView.SetActive(false);
     }
 
     public void PlayRodCastAnimation()

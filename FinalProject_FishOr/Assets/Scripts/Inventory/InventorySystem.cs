@@ -22,6 +22,13 @@ public class InventorySystem : MonoBehaviour
     public ItemData basicBaitItem;
     public ItemData bucketItem;
 
+    [Header("Test Weapon Items")]
+    public ItemData smgItem;
+    public ItemData smgAmmoItem;
+    public ItemData grenadeItem;
+    public ItemData rpgItem;
+    public ItemData rpgAmmoItem;
+
     private void Start()
     {
         if (slots.Count == 0)
@@ -31,6 +38,7 @@ public class InventorySystem : MonoBehaviour
             AddItem(basicBaitItem, 10);
             AddItem(bucketItem, 1);
 
+           
         }
     }
 

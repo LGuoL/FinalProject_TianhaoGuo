@@ -214,6 +214,8 @@ public class GameManager : MonoBehaviour
         equipment.fishingRodController = player.GetComponent<FishingRodController>();
         equipment.bucketCollector = player.GetComponent<BucketCollector>();
         equipment.weaponFishingController = player.GetComponent<WeaponFishingController>();
+        equipment.inventory = player.GetComponent<InventorySystem>();
+        equipment.weaponVisuals = player.GetComponent<PlayerWeaponVisuals>();
 
         GameObject equippedTextObj = GameObject.Find("EquippedText");
 
@@ -254,6 +256,26 @@ public class GameManager : MonoBehaviour
         ReconnectFishingManager();
         ReconnectMerchant(bucketSystem);
         ReconnectPlayerEquipment(player);
+        ReconnectMysteryBoxEffect(player);
+    }
+
+    private void ReconnectMysteryBoxEffect(GameObject player)
+    {
+        MysteryBoxEffect effect = player.GetComponent<MysteryBoxEffect>();
+
+        if (effect == null)
+            return;
+
+        effect.inventory = player.GetComponent<InventorySystem>();
+
+        GameObject spawnObj = GameObject.Find("MysteryFishSpawnPoint");
+        GameObject targetObj = GameObject.Find("MysteryFishTargetPoint");
+
+        if (spawnObj != null)
+            effect.fishSpawnPoint = spawnObj.transform;
+
+        if (targetObj != null)
+            effect.fishTargetPoint = targetObj.transform;
     }
 
     private void ReconnectWeaponFishing(GameObject player, Camera cam, InventorySystem inventory)
@@ -301,9 +323,6 @@ public class GameManager : MonoBehaviour
 
         if (hud == null)
             return;
-
-        hud.inventory = inventory;
-        hud.bucket = bucketSystem;
 
         AssignText("OrderText", ref hud.orderText);
         AssignText("MoneyText", ref hud.moneyText);

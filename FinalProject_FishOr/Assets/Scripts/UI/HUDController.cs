@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using System.Text;
 
 public class HUDController : MonoBehaviour
 {
@@ -10,11 +9,13 @@ public class HUDController : MonoBehaviour
     public TextMeshProUGUI bucketText;
     public TextMeshProUGUI inventoryText;
 
-    public InventorySystem inventory;
-    public BucketSystem bucket;
+    private InventorySystem inventory;
+    private BucketSystem bucket;
 
     void Update()
     {
+        FindPlayerReferences();
+
         if (GameManager.Instance != null)
         {
             if (orderText != null)
@@ -32,20 +33,27 @@ public class HUDController : MonoBehaviour
             bucketText.text = $"Bucket: {bucket.currentFishCount} fish";
         }
 
-        if (inventoryText != null && inventory != null)
+        if (inventoryText != null)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Inventory: ");
-
-            foreach (var slot in inventory.slots)
+            if (inventory != null)
             {
-                if (slot.item != null)
-                {
-                    sb.Append($"{slot.item.itemName} x{slot.count}   ");
-                }
+                inventoryText.text = $"Inventory Slots: {inventory.slots.Count}/{inventory.maxSlots}";
             }
-
-            inventoryText.text = sb.ToString();
+            else
+            {
+                inventoryText.text = "Inventory Slots: Missing";
+            }
         }
+    }
+
+    private void FindPlayerReferences()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player == null)
+            return;
+
+        inventory = player.GetComponent<InventorySystem>();
+        bucket = player.GetComponent<BucketSystem>();
     }
 }
