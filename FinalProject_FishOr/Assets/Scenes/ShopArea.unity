@@ -560,8 +560,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   hasSeenDay3ShopDialogue: 0
   specialShopUnlocked: 0
-  currentDay: 1
-  money: 20
+  currentDay: 3
+  money: 100000
   currentOrderRequired: 8
   currentOrderSubmitted: 0
   fishingTimeLimit: 180
@@ -10758,28 +10758,23 @@ MonoBehaviour:
 
     E - Interact
 
-    1
-    - Equip Rod
+    Scroll
+    the mouse wheel to switch equipment
 
-    2 - Equip Bucket
+    F1-F5 to switch between rods and Baits
 
-    ... - more weapons
-
-    F1-F5 to switch
-    between rods and Baits
-
-    Left Mouse - Use Equipped Item
+    Left
+    Mouse - Use Equipped Item
 
 
     Goal:
 
-    Talk
-    to the merchant first.
+    Talk to the merchant first.
 
-    Then use the sign to start fishing.
+    Then
+    use the sign to start fishing.
 
-    Submit enough
-    fish before time runs out.'
+    Submit enough fish before time runs out.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
